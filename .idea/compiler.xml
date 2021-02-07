@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ship" />
+        <module name="orders" />
+        <module name="product" />
+        <module name="invoice" />
+        <module name="kernel" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ddd" target="11" />
+      <module name="invoice" target="11" />
+      <module name="kernel" target="11" />
+      <module name="orders" target="11" />
+      <module name="product" target="11" />
+      <module name="ship" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="invoice" options="-parameters" />
+      <module name="kernel" options="-parameters" />
+      <module name="orders" options="-parameters" />
+      <module name="product" options="-parameters" />
+      <module name="ship" options="-parameters" />
+    </option>
+  </component>
+</project>
