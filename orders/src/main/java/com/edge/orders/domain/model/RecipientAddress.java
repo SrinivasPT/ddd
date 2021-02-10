@@ -7,27 +7,26 @@ import com.edge.kernel.domain.geo.PIN;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
+@Embeddable
+@MappedSuperclass
 public class RecipientAddress extends Address {
-    private String recipientName;
+    private String name;
 
     public RecipientAddress() {
     }
 
-    public RecipientAddress(@NonNull String recipientName,
+    public RecipientAddress(@NonNull String name,
                             @NonNull String addressLine1,
                             @Nullable String addressLine2,
                             @NonNull CityName city,
                             @NonNull Country country,
-                            @NonNull PIN pin) {
+                            @Nullable PIN pin) {
         super(addressLine1, addressLine2, city, country, pin);
-        this.recipientName = recipientName;
-    }
-
-    @NonNull
-    public String recipientName() {
-        return recipientName;
+        this.name = name;
     }
 
     @Override
@@ -36,11 +35,11 @@ public class RecipientAddress extends Address {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         RecipientAddress that = (RecipientAddress) o;
-        return Objects.equals(recipientName, that.recipientName);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), recipientName);
+        return Objects.hash(super.hashCode(), name);
     }
 }

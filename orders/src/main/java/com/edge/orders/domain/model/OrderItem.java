@@ -2,10 +2,13 @@ package com.edge.orders.domain.model;
 
 import com.edge.kernel.domain.base.AbstractEntity;
 import com.edge.kernel.domain.base.DomainObjectId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
 public class OrderItem extends AbstractEntity<OrderItemId> {
 
     @Column(nullable = false)
@@ -18,6 +21,9 @@ public class OrderItem extends AbstractEntity<OrderItemId> {
     private Long price;
     @Column(nullable = false)
     private Integer quantity;
+
+    private OrderItem() {
+    }
 
     public OrderItem(OrderItemId id, ProductId productId,
                      String itemDescription, String currency,
@@ -48,5 +54,30 @@ public class OrderItem extends AbstractEntity<OrderItemId> {
 
     public void setQuantity(@NonNull Integer quantity) {
         this.quantity = quantity;
+    }
+
+    @JsonProperty("productId")
+    public ProductId productId() {
+        return productId;
+    }
+
+    @JsonProperty("itemDescription")
+    public String itemDescription() {
+        return itemDescription;
+    }
+
+    @JsonProperty("currency")
+    public String currency() {
+        return currency;
+    }
+
+    @JsonProperty("price")
+    public Long price() {
+        return price;
+    }
+
+    @JsonProperty("quantity")
+    public Integer quantity() {
+        return quantity;
     }
 }

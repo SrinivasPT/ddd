@@ -1,11 +1,16 @@
 package com.edge.kernel.domain.geo;
 
 import com.edge.kernel.domain.base.ValueObject;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
+@Embeddable
+@MappedSuperclass
 public class Address implements ValueObject {
 
     private String addressLine1;
@@ -26,31 +31,6 @@ public class Address implements ValueObject {
         this.pin = pin;
     }
 
-    @Nullable
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    @Nullable
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    @Nullable
-    public CityName getCity() {
-        return city;
-    }
-
-    @Nullable
-    public Country getCountry() {
-        return country;
-    }
-
-    @Nullable
-    public PIN getPin() {
-        return pin;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,6 +41,31 @@ public class Address implements ValueObject {
                 Objects.equals(city, address.city) &&
                 country == address.country &&
                 Objects.equals(pin, address.pin);
+    }
+
+    @JsonProperty("addressLine1")
+    public String addressLine1(){
+        return addressLine1;
+    }
+
+    @JsonProperty("addressLine2")
+    public String addressLine2(){
+        return addressLine2;
+    }
+
+    @JsonProperty("city")
+    public CityName city(){
+        return city;
+    }
+
+    @JsonProperty("country")
+    public Country country(){
+        return country;
+    }
+
+    @JsonProperty("pin")
+    public PIN pin(){
+        return pin;
     }
 
     @Override

@@ -11,19 +11,20 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
 import java.time.Clock;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
 public class OrderAppService {
     private final Validator validator;
     private final OrderRepository orderRepository;
-    private final Clock clock;
+    private final Clock clock = Clock.systemDefaultZone();
 
-    public OrderAppService(Validator validator, OrderRepository orderRepository, Clock clock) {
+    public OrderAppService(Validator validator, OrderRepository orderRepository) {
         this.validator = validator;
         this.orderRepository = orderRepository;
-        this.clock = clock;
     }
 
     public OrderId createOrder(@NonNull OrderDto form) {
@@ -46,5 +47,13 @@ public class OrderAppService {
                 recipientAddressDto.getAddressLine1(),
                 recipientAddressDto.getAddressLine2(),
                 recipientAddressDto.getCityName(), recipientAddressDto.getCountry(), recipientAddressDto.getPin());
+    }
+
+    public List<Order> findAll(){
+        return orderRepository.findAll();
+    }
+
+    public Optional<Order> findById(@NonNull OrderId orderId){
+        return orderRepository.findById(orderId);
     }
 }

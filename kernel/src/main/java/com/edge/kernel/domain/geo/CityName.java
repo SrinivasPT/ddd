@@ -2,6 +2,7 @@ package com.edge.kernel.domain.geo;
 
 import com.edge.kernel.domain.base.ValueObject;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
@@ -28,9 +29,8 @@ public class CityName implements ValueObject {
     }
 
     @Override
+    @JsonValue
     public String toString() {
-        return "CityName{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

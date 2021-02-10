@@ -1,11 +1,13 @@
 package com.edge.kernel.domain.geo;
 
+import com.edge.kernel.domain.base.ValueObject;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 
-public class PIN {
+public class PIN implements ValueObject {
     private final Long pin;
 
     @JsonCreator
@@ -27,9 +29,8 @@ public class PIN {
     }
 
     @Override
+    @JsonValue
     public String toString() {
-        return "PIN{" +
-                "pin=" + pin +
-                '}';
+        return pin.toString();
     }
 }
