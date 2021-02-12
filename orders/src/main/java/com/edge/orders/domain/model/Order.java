@@ -2,9 +2,11 @@ package com.edge.orders.domain.model;
 
 import com.edge.kernel.domain.base.AbstractAggregateRoot;
 import com.edge.kernel.domain.base.DomainObjectId;
+import com.edge.orders.domain.event.OrderStateChanged;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,12 +14,19 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractAggregateRoot<OrderId> {
+public class    Order extends AbstractAggregateRoot<OrderId> {
     @Version
     private Long version;
     @Column(nullable = false)
     private Instant orderedOn;
     private String currency;
+
+    @Enumerated(EnumType.STRING)
+    private OrderState state;
+
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name = "order_state_changes")
+    private Set<OrderStateChange> stateChangeHistory;
 
     @Embedded
     @AttributeOverrides({
@@ -82,6 +91,37 @@ public class Order extends AbstractAggregateRoot<OrderId> {
 
     private void setShippingAddress(RecipientAddress shippingAddress) {
         this.shippingAddress = Objects.requireNonNull(shippingAddress, "Shipping address is missing");
+    }
+
+    private void setState(OrderState state, Clock clock){
+        Objects.requireNonNull(clock, "clock can't be null");
+        setState(state, clock.instant());
+    }
+
+    private void setState(OrderState state, Instant changedOn){
+        Objects.requireNonNull(state, "State can't be null");
+        Objects.requireNonNull(changedOn, "ChangedOn can't be null");
+
+        if(stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))){
+            throw new IllegalStateException("Order has been already in state " + state);
+        }
+
+        var stateChange = new OrderStateChange(changedOn, state);
+        stateChangeHistory.add(stateChange);
+
+        if(stateChangeHistory.size() > 1){
+            registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
+        }
+
+        this.state = state;
+    }
+
+    public void startProcessing(Clock clock){
+        setState(OrderState.PROCESSING, clock);
+    }
+
+    public void finishProcessing(Clock clock){
+        setState(OrderState.PROCESSED, clock);
     }
 
     @JsonProperty("currency")

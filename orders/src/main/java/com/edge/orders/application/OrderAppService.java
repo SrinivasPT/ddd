@@ -56,4 +56,18 @@ public class OrderAppService {
     public Optional<Order> findById(@NonNull OrderId orderId){
         return orderRepository.findById(orderId);
     }
+
+    public void startProcessing(OrderId orderId){
+        orderRepository.findById(orderId).ifPresent(order -> {
+            order.startProcessing(clock);
+            orderRepository.save(order);
+        });
+    }
+
+    public void finishProcessing(OrderId orderId){
+        orderRepository.findById(orderId).ifPresent(order -> {
+            order.finishProcessing(clock);
+            orderRepository.save(order);
+        });
+    }
 }

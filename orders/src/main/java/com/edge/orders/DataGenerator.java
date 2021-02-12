@@ -35,6 +35,6 @@ public class DataGenerator {
                 new ProductId(UUID.randomUUID().toString()),
                 "MacBook", "INR", 120000L, 10));
 
-        // orderRepository.save(order);
+        orderRepository.save(order);
     }
 }
