@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public abstract class DomainObjectId implements ValueObject {
 
-    private final UUID uuid;
+    private final String uuid;
 
     @JsonCreator
-    protected DomainObjectId(@NonNull UUID uuid) {
+    protected DomainObjectId(@NonNull String uuid) {
         this.uuid = Objects.requireNonNull(uuid, "uuid must not be null");
     }
 
@@ -34,7 +34,7 @@ public abstract class DomainObjectId implements ValueObject {
      */
     @JsonValue
     @NonNull
-    public UUID toUUID() {
+    public String toUUID() {
         return uuid;
     }
 
